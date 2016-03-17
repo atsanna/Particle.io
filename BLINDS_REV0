@@ -1,0 +1,48 @@
+Servo myservo;
+int val;
+int blindControl(String command);
+
+void setup()
+{
+
+    myservo.attach(A7);  // attaches the servo on analog pin A7 to the servo object 
+
+    Particle.function("blindControl", blindControl);
+
+    //Use RGB LED on device to show status, helps for troubleshooting.
+    RGB.control(true); 
+    //Reset the servo to the closed position
+    //This might hurt the servo, hopefully it has some protection built in
+    analogWrite(A7, 180);
+    //Roll blinds shut with some extra in case they somehow went too far
+    delay(1200);
+    //Stop all motion
+    analogWrite(A7, 255);
+    //Indicate: Closed
+    RGB.color(255, 0, 0);
+
+}
+
+void loop()
+{
+
+}
+
+int blindControl(String command)
+
+{  //if and else will set on off functionality
+    if (command == "1") {   
+    analogWrite(A7, 220);
+    delay(600);
+    analogWrite(A7, 255);
+    //Indicate: Opened
+    RGB.color(0, 255, 0);
+
+  } else if(command == "0"){
+    analogWrite(A7, 180);
+    delay(600);
+    analogWrite(A7, 255);
+    //Indicate: Closed
+    RGB.color(255, 0, 0);
+      }
+}
